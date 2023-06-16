@@ -13,17 +13,17 @@ public class FileReader {
     public Profile getDataFromFile(File file) {
 
         Path filePath = Path.of(file.getPath());
-        if (Files.exists(filePath)) {
 
-            try {
-                byte[] bytes = Files.readAllBytes(filePath);
-                text = new String(bytes);
 
-            } catch (IOException e) {
-                System.err.print(e);
-            }
+        try {
+            byte[] bytes = Files.readAllBytes(filePath);
+            text = new String(bytes);
+            text = text.replace(System.lineSeparator(), ": ");
 
-            text = text.replace("\r\n", ": ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
             String[] words = text.split(": ");
             Profile pf = new Profile();
@@ -34,8 +34,7 @@ public class FileReader {
                 if (words[i - 1].equals("Email")) pf.setEmail(words[i]);
                 if (words[i - 1].equals("Phone")) pf.setPhone((long) Integer.parseInt(words[i]));
             }
-            return pf;
-        } else return new Profile();
 
+            return pf;
     }
 }
